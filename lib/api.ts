@@ -1,4 +1,3 @@
-// src/lib/api.ts
 
 import axios from "axios";
 
