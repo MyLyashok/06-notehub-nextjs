@@ -4,13 +4,15 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { createNote, type CreateNoteDto } from '@/lib/api';
+import type { NoteTag } from '@/types/note';
+
 import css from './NoteForm.module.css';
 
 interface NoteFormProps {
     onClose?: () => void;
 }
 
-const TAG_OPTIONS = ['Todo', 'Work', 'Personal', 'Meeting', 'Shopping'];
+const TAG_OPTIONS: NoteTag[] = ['Todo', 'Work', 'Personal', 'Meeting', 'Shopping'];
 
 function NoteForm({ onClose }: NoteFormProps) {
     const queryClient = useQueryClient();
