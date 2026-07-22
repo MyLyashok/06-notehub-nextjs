@@ -8,7 +8,7 @@ export default async function NotesPage() {
 
     await queryClient.prefetchQuery({
         queryKey: ['notes', ''],
-        queryKeyFn: () => fetchNotes(''),
+        queryFn: () => fetchNotes(''),
     });
 
     return (
