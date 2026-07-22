@@ -1,15 +1,53 @@
-import { Note } from '@/lib/api';
-import NoteItem from '../NoteItem/NoteItem';
+'use client';
 
-type Props = {
+import Link from 'next/link';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { deleteNote } from '@/lib/api';
+import { Note } from '@/types/note';
+import css from './NoteList.module.css';
+
+interface NoteListProps {
     notes: Note[];
-};
+}
 
-const NoteList = ({ notes }: Props) => {
+function NoteList({ notes }: NoteListProps) {
+    const queryClient = useQueryClient();
+
+    const deleteMutation = useMutation({
+        mutationFn: (id: string) => deleteNote(id),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['notes'] });
+        },
+    });
+
+    if (notes.length === 0) return null;
+
     return (
-        <ul>
+        <ul className={css.list}>
             {notes.map((note) => (
-                <NoteItem key={note.id} item={note} />
+                <li key={note.id} className={css.listItem}>
+                    <h2 className={css.title}>{note.title}</h2>
+                    <p className={css.content}>{note.content}</p>
+                    <div className={css.footer}>
+                        <span className={`${css.tag} ${css[note.tag.toLowerCase()] || ''}`}>
+                            {note.tag}
+                        </span>
+
+                        <div className={css.actions}>
+                            <Link href={`/notes/${note.id}`} className={css.link}>
+                                View details
+                            </Link>
+
+                            <button
+                                className={css.button}
+                                onClick={() => deleteMutation.mutate(note.id)}
+                                disabled={deleteMutation.isPending}
+                            >
+                                {deleteMutation.isPending ? '...' : 'Delete'}
+                            </button>
+                        </div>
+                    </div>
+                </li>
             ))}
         </ul>
     );
