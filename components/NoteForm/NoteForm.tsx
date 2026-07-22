@@ -7,7 +7,7 @@ import { createNote, type CreateNoteDto } from '@/lib/api';
 import css from './NoteForm.module.css';
 
 interface NoteFormProps {
-    onClose: () => void;
+    onClose?: () => void;
 }
 
 const TAG_OPTIONS = ['Todo', 'Work', 'Personal', 'Meeting', 'Shopping'];
