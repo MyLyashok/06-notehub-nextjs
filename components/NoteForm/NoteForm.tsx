@@ -19,7 +19,7 @@ function NoteForm({ onClose }: NoteFormProps) {
         mutationFn: (newNote: CreateNoteDto) => createNote(newNote),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['notes'] });
-            onClose();
+            onClose?.();
         },
     });
 
